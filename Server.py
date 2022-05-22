@@ -1,8 +1,6 @@
-import numbers
 import socket
 import os
 import platform
-from unicodedata import numeric
 
 
 def C_server(ip,port):
