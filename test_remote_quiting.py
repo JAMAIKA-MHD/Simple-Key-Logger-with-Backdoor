@@ -69,5 +69,4 @@ def wait_for_user_input():
 
 remote_host = conn_hundler(C_server('0.0.0.0',8083)) # to be used in on_press func 
 
-
 print(wait_for_user_input()) # main
