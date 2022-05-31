@@ -8,7 +8,7 @@
    
 # Usage : 
 
-    - The Program is In Python3.
+    - The Program is Written in Python3.
   
     - Server Is Listening By DEFAULT on every interface ( 0.0.0.0 ) at Port 8083 ( you can make changes If needed ! ).
     
